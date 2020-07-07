@@ -261,7 +261,7 @@ f2 = 1000.0*1.1*(0.0036*meteo[:,4]+0.00423)
 f1 = (1.0-albedo)*meteo[:,2] + meteo[:,3] + f2*(meteo[:,1]+kelvin)
 
 # longueur et largeur de l'échangeur, exprimées en m
-lincha=7.5
+lincha=1.5
 larcha=4
 dx=0.75
 # pas de temps en secondes pour la discrétisation temporelle

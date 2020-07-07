@@ -29,7 +29,8 @@ print(meteo.shape)
 f2 = 1000.0*1.1*(0.0036*meteo[:,4]+0.00423)
 f1 = (1.0-albedo)*meteo[:,2] + meteo[:,3] + f2*(meteo[:,1]+kelvin)
 
-dromo=OneDModel('input.txt',step,meteo.shape[0],4,0.75,qdro)
+long = 4.0
+dromo=OneDModel('input.txt',step,meteo.shape[0],long,0.75)
 dromo.f1 = f1
 dromo.f2 = f2
 
@@ -44,7 +45,7 @@ print(dromo.T[i_summerStart,:,:])
 input("press any key")
 
 for n in range(i_summerStart,i_summerEnd):
-    dromo.iterate(n,Tinj)
+    dromo.iterate(n,Tinj,qdro)
     
 """
 T1d contiendra les températures des couches à la sortie du dromotherme
@@ -55,6 +56,12 @@ axe 1 : z
 _test[:,0] : couche de surface
 _test[:,1] : couche drainante
 """
+nrjrecue = np.sum(meteo[i_summerStart:i_summerEnd,2])/(1000)
+nrjrecup = np.sum(dromo.T[i_summerStart:i_summerEnd,1,-1])*qdro*4200000/(1000*long) - (i_summerEnd-i_summerStart)*Tinj*qdro*4200000/(1000*long)
+
+print(nrjrecue)
+print(nrjrecup)
+print(100 * nrjrecup/nrjrecue,' %');
 np.savetxt('T1d.txt', dromo.T[:,:,-1]-kelvin, fmt='%.2e')
     
 plt.subplot(111)
